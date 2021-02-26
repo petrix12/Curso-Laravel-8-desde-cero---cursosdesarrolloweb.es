@@ -1,0 +1,155 @@
+Curso Laravel 8 desde cero
+==========================
+
+URL: https://www.cursosdesarrolloweb.es/course/curso-laravel-8-desde-cero
+
+Instalar Composer en Windows
+============================
+Descargar y ejecutar instalador.
+
+Instalar el instalador de Laravel
+=================================
+$ composer global require laravel/installer
+NOTA: lo instala con la última versión de Laravel instalada en la PC.
+
+Crear un nuevo proyecto Laravel via instalador
+==============================================
+$ laravel new nombre_proyecto
+
+Crear un nuevo proyecto Laravel via composer
+============================================
+$ composer create-project --prefer-dist laravel/laravel nombre_proyecto
+
+Ejecutar proyecto en servidor local con artisan
+===============================================
+$ php artisan serve
+
+
+*** ARCHIVOS MODIFICADOS ***
+001. Editar: routes\web.php
+002. Crear: app\Http\Controllers\HolaController.php
+    ***
+    public function __invoke(string $name){
+        return "Hols {$name}";
+    }
+    ***
+003. Eliminar: app\Http\Controllers\HolaController.php
+004. Ejecutar: $ php artisan make:controller HolaController
+    NOTA: antes comentar Route::get('/hola2/{name}', HolaController::class);
+    en routes\web.php
+005. Crear: resources\views\saludo.blade.php
+006. Modificar: .env
+007. Ejecutar: $ php artisan migrate
+008. Ejecutar: $ php artisan migrate:rollback
+009. Ejecutar: $ php artisan migrate
+010. Ejecutar: $ php artisan schema:dump
+011. Ejecutar: $ php artisan make:migration create_posts_table
+012. Editar: database\migrations\2021_02_19_193349_create_posts_table.php
+013. Ejecutar: $ php artisan migrate
+014. Ejecutar: $ php artisan make:migration add_user_id_to_posts_table
+015. Editar: database\migrations\2021_02_20_130204_add_user_id_to_posts_table.php
+016. Ejecutar: $ php artisan migrate
+017. Ejecutar: $ composer require doctrine/dbal
+018. Ejecutar: $ php artisan make:migration update_title_to_posts_table
+019. Editar: database\migrations\2021_02_20_132649_update_title_to_posts_table.php
+020. Ejecutar: $ php artisan migrate
+021. Ejecutar: $ php artisan make:model Post
+022. Modificar: database\seeders\DatabaseSeeder.php
+023. Ejecutar: $ php artisan db:seed
+024. Ejecutar: $ php artisan migrate:fresh
+025. Ejecutar: $ php artisan make:factory PostFactory
+026. Modificar: database\factories\PostFactory.php
+027. Ejecutar: $ php artisan db:seed
+028. Ejecutar: $ php artisan make:seeder PostSeeder
+029. Ejecutar: $ php artisan migrate:fresh --seed
+030. Ejecutar: $ php artisan make:model Phone -m
+031. Modificar: database\migrations\2021_02_22_190402_create_phones_table.php
+032. Ejecutar: $ php artisan migrate
+033. Modificar: app\Models\Phone.php
+034. Ejecutar $ php artisan vendor:publish 
+    y luego seleccionar la opción Provider: Laravel\Tinker\TinkerServiceProvider
+035. Ejecutar: $ php artisan tinker
+    NOTA: Exit o Ctrl-C para salir y clear para limpiar.
+036. Ejecutar: >>> use App\Models\User
+037. Ejecutar: >>> User::all()
+038. Ejecutar: >>> $user = User::first()
+039. Ejecutar: >>> $user
+040. Ejecutar: >>> $user->posts
+041. Ejecutar: >>> $user = User::with("posts")->find(1)
+041. Ejecutar: >>> $user->phone
+042. Ejecutar: >>> use App\Models\Phone
+043. Ejecutar: >>> $phone = new Phone
+044. Ejecutar: >>> $phone->user_id = 1
+045. Ejecutar: >>> $phone->phone_number = "1234567855"
+046. Ejecutar: >>> $phone->created_at = now()
+046. Ejecutar: >>> $phone->save()
+047. Ejecutar: >>> $user = User::with(["phone", "posts"])->find(1)
+048. Ejecutar: >>> $phone->fill(["phone_number" => "98785456"])->update()
+049. Ejecutar: >>> Exit
+050. Ejecutar: $ composer require laravel/breeze --dev
+051. Ejecutar: $ php artisan breeze:install
+052. Ejecutar: $ npm install && npm run dev
+053. Ingresar en Mailtrap (https://mailtrap.io).
+054. Configurar .env con las credenciales de Mailtrap.
+055. Para obligar al usuario a autenticarse implementar el modelo User a MustVerifyEmail
+056. Ejecutar: $ php artisan migrate:fresh --seed
+057. Ejecutar: $ php artisan make:controller ContactController
+058. Definir método index en controlador app\Http\Controllers\ContactController.php
+    ***
+    ***
+058. Definir método send en controlador app\Http\Controllers\ContactController.php
+    ***
+    ***
+059. Modificar middleware de rutas en routes\web.php
+060. Editar: resources\views\layouts\navigation.blade.php
+061. Crear: resources\views\contact\form.blade.php
+062. Ejecutar: $ composer require protonemedia/laravel-form-components
+    NOTA: Para instalar paquete de formulario de
+    https://github.com/protonemedia/laravel-form-components
+
+NOTA: Para traducir el componente anterior al español:
+    https://github.com/spatie/laravel-translatable
+    $ composer require spatie/laravel-translatable
+    $ composer require laraveles/spanish
+    $ php artisan laraveles:install-lang
+
+    https://github.com/laravel-lang/lang
+    $ composer require laravel-lang/lang:~7.0
+
+063. Ejecutar: composer require laravel-lang/lang:~7.0
+064. Copiar directorio: vendor\laravel-lang\lang\src\es
+    y pegarlo en: resources\lang
+065. Ejecutar: $ php artisan make:mail SendContactForm
+066. Modificar el método __construct de la clase app\Mail\SendContactForm.php
+067. Agregar las variables públicas: textSubject y textMessage a app\Mail\SendContactForm.php
+    ***
+    class SendContactForm extends Mailable
+    {
+        use Queueable, SerializesModels;
+
+        /**
+        * @var string
+        */
+        public string $textSubject;
+
+        /**
+        * @var string
+        */
+        public string $textMessage;
+    ***
+068. Modificar el método build de la clase app\Mail\SendContactForm.php
+069. Crear: resources\views\emails\contact.blade.php
+070. Ejecutar: $ php artisan vendor:publish
+    Seleccionar: Tag: laravel-mail
+071. Agregar la siguiente ruta al middleware en routes\web.php
+072. Crear: resources\views\components\flash-messages.blade.php
+    ***
+    ***
+073. Modificar: resources\views\layouts\app.blade.php
+    ***
+    <!-- Page Content -->
+    <main>
+        <x-flash-messages />
+        {{ $slot }}
+    </main>
+    ***
